@@ -182,6 +182,11 @@
             matchedCount = 0;
           }
           setupBoard();
+          function speak(text, lang = "en-US") {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = lang;
+            speechSynthesis.speak(utterance);
+          }
           board.addEventListener("click", (event) => {
             const card = event.target;
             if (
@@ -190,6 +195,10 @@
             )
               return;
             card.classList.add("selected");
+            speak(
+              card.innerText,
+              card.getAttribute("data-lang") === "ua" ? "uk-UA" : "en-US"
+            );
             selectedCards.push(card);
             if (selectedCards.length === 2) {
               const [first, second] = selectedCards;
