@@ -1,0 +1,36 @@
+body {
+    font-size: 24px;
+  }
+  h3 {
+    padding-left: 60px;
+  }
+  #game-board {
+    display: flex;
+    gap: 10px;
+  }
+  #column-en,
+  #column-ua {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: 2px solid black;
+    padding: 10px;
+    max-width: 150px;
+    width: 100%;
+    border-radius: 20px;
+    background-color: greenyellow;
+  }
+  .card {
+    padding: 10px;
+    border: 2px solid black;
+    cursor: pointer;
+    transition: border-color 0.5s;
+    border-radius: 20px;
+    font-size: 16px;
+  }
+  .card.selected {
+    background-color: aquamarine;
+  }
+  .card.error {
+    background-color: coral;
+  }

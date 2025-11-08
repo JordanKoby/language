@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css/task1.css" />
+  </head>
+  <body>
+    <!-- <p>
+      Задача. Перекладач. Користувачу виводять змішані картки з словами на
+      англійській і українській мові. Користувач поступово клікає на картки
+      (виділяємо синьою рамкою). Якщо знайдено правильні пари карток, що
+      відповідають одному слову, то видаляємо ці картки. Інакше - виділяємо
+      червоною рамкою і через секунду забираємо рамку.
+    </p> -->
+    <h3>Знайдіть пари слів</h3>
+    <div id="game-board">
+      <div id="column-en"></div>
+      <div id="column-ua"></div>
+    </div>
+    <div
+      id="celebration"
+      style="display: none; text-align: center; margin-top: 20px"
+    >
+      <img
+        src="style.css/img/png-klev-club-p-khello-kitti-png-10.png"
+        alt="Вітаємо!"
+        style="max-width: 300px"
+      />
+      <p><strong> Молодець!</strong></p>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        if (confirm("Почати тестування?")) {
+          const words = [
+            { id: 1, en: "hello", ua: "привіт" },
+            { id: 2, en: "goodbye", ua: "до побачення" },
+            { id: 3, en: "please", ua: "будь ласка" },
+            { id: 4, en: "thank you", ua: "дякую" },
+            { id: 5, en: "yes", ua: "так" },
+            { id: 6, en: "no", ua: "ні" },
+            { id: 7, en: "man", ua: "чоловік" },
+            { id: 8, en: "woman", ua: "жінка" },
+            { id: 9, en: "child", ua: "дитина" },
+            { id: 10, en: "family", ua: "родина" },
+            { id: 11, en: "friend", ua: "друг" },
+            { id: 12, en: "love", ua: "любов" },
+            { id: 13, en: "house", ua: "будинок" },
+            { id: 14, en: "room", ua: "кімната" },
+            { id: 15, en: "window", ua: "вікно" },
+            { id: 16, en: "door", ua: "двері" },
+            { id: 17, en: "table", ua: "стіл" },
+            { id: 18, en: "chair", ua: "стілець" },
+            { id: 19, en: "bed", ua: "ліжко" },
+            { id: 20, en: "school", ua: "школа" },
+            { id: 21, en: "teacher", ua: "вчитель" },
+            { id: 22, en: "student", ua: "учень" },
+            { id: 23, en: "book", ua: "книга" },
+            { id: 24, en: "pen", ua: "ручка" },
+            { id: 25, en: "computer", ua: "комп’ютер" },
+            { id: 26, en: "phone", ua: "телефон" },
+            { id: 27, en: "car", ua: "автомобіль" },
+            { id: 28, en: "bus", ua: "автобус" },
+            { id: 29, en: "road", ua: "дорога" },
+            { id: 30, en: "city", ua: "місто" },
+            { id: 31, en: "shop", ua: "магазин" },
+            { id: 32, en: "money", ua: "гроші" },
+            { id: 33, en: "work", ua: "робота" },
+            { id: 34, en: "food", ua: "їжа" },
+            { id: 35, en: "water", ua: "вода" },
+            { id: 36, en: "milk", ua: "молоко" },
+            { id: 37, en: "bread", ua: "хліб" },
+            { id: 38, en: "apple", ua: "яблуко" },
+            { id: 39, en: "dog", ua: "собака" },
+            { id: 40, en: "cat", ua: "кіт" },
+            { id: 41, en: "sun", ua: "сонце" },
+            { id: 42, en: "rain", ua: "дощ" },
+            { id: 43, en: "snow", ua: "сніг" },
+            { id: 44, en: "cold", ua: "холод" },
+            { id: 45, en: "hot", ua: "спека" },
+            { id: 46, en: "day", ua: "день" },
+            { id: 47, en: "night", ua: "ніч" },
+            { id: 48, en: "time", ua: "час" },
+            { id: 49, en: "happy", ua: "щасливий" },
+            { id: 50, en: "sad", ua: "сумний" },
+            { id: 51, en: "name", ua: "ім’я" },
+            { id: 52, en: "country", ua: "країна" },
+            { id: 53, en: "language", ua: "мова" },
+            { id: 54, en: "world", ua: "світ" },
+            { id: 55, en: "people", ua: "люди" },
+            { id: 56, en: "boy", ua: "хлопець" },
+            { id: 57, en: "girl", ua: "дівчина" },
+            { id: 58, en: "mother", ua: "мати" },
+            { id: 59, en: "father", ua: "батько" },
+            { id: 60, en: "brother", ua: "брат" },
+            { id: 61, en: "sister", ua: "сестра" },
+            { id: 62, en: "morning", ua: "ранок" },
+            { id: 63, en: "evening", ua: "вечір" },
+            { id: 64, en: "week", ua: "тиждень" },
+            { id: 65, en: "month", ua: "місяць" },
+            { id: 66, en: "year", ua: "рік" },
+            { id: 67, en: "hour", ua: "година" },
+            { id: 68, en: "minute", ua: "хвилина" },
+            { id: 69, en: "second", ua: "секунда" },
+            { id: 70, en: "today", ua: "сьогодні" },
+            { id: 71, en: "tomorrow", ua: "завтра" },
+            { id: 72, en: "yesterday", ua: "вчора" },
+            { id: 73, en: "weather", ua: "погода" },
+            { id: 74, en: "wind", ua: "вітер" },
+            { id: 75, en: "sky", ua: "небо" },
+            { id: 76, en: "star", ua: "зірка" },
+            { id: 77, en: "tree", ua: "дерево" },
+            { id: 78, en: "flower", ua: "квітка" },
+            { id: 79, en: "grass", ua: "трава" },
+            { id: 80, en: "mountain", ua: "гора" },
+            { id: 81, en: "river", ua: "річка" },
+            { id: 82, en: "sea", ua: "море" },
+            { id: 83, en: "lake", ua: "озеро" },
+            { id: 84, en: "forest", ua: "ліс" },
+            { id: 85, en: "animal", ua: "тварина" },
+            { id: 86, en: "bird", ua: "птах" },
+            { id: 87, en: "fish", ua: "риба" },
+            { id: 88, en: "egg", ua: "яйце" },
+            { id: 89, en: "meat", ua: "м’ясо" },
+            { id: 90, en: "sugar", ua: "цукор" },
+            { id: 91, en: "salt", ua: "сіль" },
+            { id: 92, en: "tea", ua: "чай" },
+            { id: 93, en: "coffee", ua: "кава" },
+            { id: 94, en: "juice", ua: "сік" },
+            { id: 95, en: "breakfast", ua: "сніданок" },
+            { id: 96, en: "lunch", ua: "обід" },
+            { id: 97, en: "dinner", ua: "вечеря" },
+            { id: 98, en: "plate", ua: "тарілка" },
+            { id: 99, en: "cup", ua: "чашка" },
+            { id: 100, en: "spoon", ua: "ложка" },
+          ];
+          function chunkArray(array, size) {
+            const result = [];
+            for (let i = 0; i < array.length; i += size) {
+              result.push(array.slice(i, i + size));
+            }
+            return result;
+          }
+          const wordGroups = chunkArray(words, 10);
+          let currentGroupIndex = 0;
+          const board = document.getElementById("game-board");
+          const columnEn = document.getElementById("column-en");
+          const columnUa = document.getElementById("column-ua");
+          function renderGroup(group) {
+            let cardsEn = [];
+            let cardsUa = [];
+            group.forEach((word) => {
+              cardsEn.push({ id: word.id, lang: "en", text: word.en });
+              cardsUa.push({ id: word.id, lang: "ua", text: word.ua });
+            });
+            cardsEn = cardsEn.sort(() => Math.random() - 0.5);
+            cardsUa = cardsUa.sort(() => Math.random() - 0.5);
+            cardsEn.forEach((card) => {
+              const div = document.createElement("div");
+              div.classList.add("card");
+              div.innerText = card.text;
+              div.setAttribute("data-id", card.id);
+              div.setAttribute("data-lang", card.lang);
+              columnEn.append(div);
+            });
+            cardsUa.forEach((card) => {
+              const div = document.createElement("div");
+              div.classList.add("card");
+              div.textContent = card.text;
+              div.setAttribute("data-id", card.id);
+              div.setAttribute("data-lang", card.lang);
+              columnUa.append(div);
+            });
+          }
+          let matchedCount = 0;
+          let selectedCards = [];
+          function setupBoard() {
+            selectedCards = [];
+            renderGroup(wordGroups[currentGroupIndex]);
+            matchedCount = 0;
+          }
+          setupBoard();
+          board.addEventListener("click", (event) => {
+            const card = event.target;
+            if (
+              !card.classList.contains("card") ||
+              selectedCards.includes(card)
+            )
+              return;
+            card.classList.add("selected");
+            selectedCards.push(card);
+            if (selectedCards.length === 2) {
+              const [first, second] = selectedCards;
+              const isCorrectPair =
+                first.getAttribute("data-id") ===
+                  second.getAttribute("data-id") &&
+                first.getAttribute("data-lang") !==
+                  second.getAttribute("data-lang");
+              if (isCorrectPair) {
+                setTimeout(() => {
+                  first.remove();
+                  second.remove();
+                  selectedCards = [];
+                  matchedCount++;
+                  if (matchedCount === 10) {
+                    currentGroupIndex++;
+                    document.getElementById("celebration").style.display =
+                      "block";
+
+                    if (currentGroupIndex < wordGroups.length) {
+                      setTimeout(() => {
+                        columnEn.innerHTML = "";
+                        columnUa.innerHTML = "";
+                        document.getElementById("celebration").style.display =
+                          "none";
+                        setupBoard();
+                      }, 3000);
+                    } else {
+                      alert("Тест завершено!");
+                    }
+                  }
+                }, 300);
+              } else {
+                first.classList.add("error");
+                second.classList.add("error");
+                setTimeout(() => {
+                  first.classList.remove("selected", "error");
+                  second.classList.remove("selected", "error");
+                  selectedCards = [];
+                }, 1000);
+              }
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
